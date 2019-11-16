@@ -39,7 +39,7 @@ def index():
         flash('Your post is now live!')
         return redirect(url_for('main.index'))
 
-    posts = current_user.posts.all()
+    posts = current_user.followed_posts().all()
     return render_template("index.html", title='Home Page', form=form,
                            posts=posts)
 
@@ -91,14 +91,17 @@ def edit_profile():
 @bp.route('/follow/<username>')
 @login_required
 def follow(username):
-    user = User.query.filter_by(username=username).first()
-    if user is None:
+    """
+    Route for follow user
+    """
+    _user = User.query.filter_by(username=username).first()
+    if _user is None:
         flash('User {} not found.'.format(username))
         return redirect(url_for('index'))
-    if user == current_user:
+    if _user == current_user:
         flash('You cannot follow yourself!')
         return redirect(url_for('main.user', username=username))
-    current_user.follow(user)
+    current_user.follow(_user)
     db.session.commit()
     flash('You are following {}!'.format(username))
     return redirect(url_for('main.user', username=username))
@@ -106,14 +109,17 @@ def follow(username):
 @bp.route('/unfollow/<username>')
 @login_required
 def unfollow(username):
-    user = User.query.filter_by(username=username).first()
-    if user is None:
+    """
+    Route for unfollow user
+    """
+    _user = User.query.filter_by(username=username).first()
+    if _user is None:
         flash('User {} not found.'.format(username))
         return redirect(url_for('index'))
-    if user == current_user:
+    if _user == current_user:
         flash('You cannot unfollow yourself!')
         return redirect(url_for('main.user', username=username))
-    current_user.unfollow(user)
+    current_user.unfollow(_user)
     db.session.commit()
     flash('You are not following {}.'.format(username))
     return redirect(url_for('main.user', username=username))

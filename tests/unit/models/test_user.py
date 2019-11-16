@@ -46,6 +46,7 @@ def test_avatar(_mock_current_app, user1):
                                  '?d=retro&s=128')
 
 def test_follow(test_app):
+    #pylint: disable=unused-argument
     """
     Test for checking the following functionality
     """
@@ -72,6 +73,7 @@ def test_follow(test_app):
     assert u2.followers.count() == 0
 
 def test_follow_posts(test_app):
+    #pylint: disable=unused-argument
     """
     Test for checking the follow post functionality
     """
@@ -85,13 +87,13 @@ def test_follow_posts(test_app):
     # create four posts
     now = datetime.utcnow()
     p1 = Post(body="post from john", author=u1,
-                timestamp=now + timedelta(seconds=1))
+              timestamp=now + timedelta(seconds=1))
     p2 = Post(body="post from susan", author=u2,
-                timestamp=now + timedelta(seconds=4))
+              timestamp=now + timedelta(seconds=4))
     p3 = Post(body="post from mary", author=u3,
-                timestamp=now + timedelta(seconds=3))
+              timestamp=now + timedelta(seconds=3))
     p4 = Post(body="post from david", author=u4,
-                timestamp=now + timedelta(seconds=2))
+              timestamp=now + timedelta(seconds=2))
     db.session.add_all([p1, p2, p3, p4])
     db.session.commit()
 
@@ -111,3 +113,4 @@ def test_follow_posts(test_app):
     assert f2 == [p2, p3]
     assert f3 == [p3, p4]
     assert f4 == [p4]
+    
