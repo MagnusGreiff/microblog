@@ -1,0 +1,28 @@
+version: '3'
+services:
+  test:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile_test
+    command: docker run microblog_test:latest
+  prod:
+    image: radchasay/devops
+    ports: 
+     - 8000:5000
+    links:
+     - prod_database
+    restart: always
+    environment:
+      - SECRET_KEY=my-secret-key
+      - DATABASE_URL=mysql+pymysql://microblog:hej123@prod_database/microblog
+  prod_database:
+    image: mysql/mysql-server:5.7
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=microblog
+      - MYSQL_USER=microblog
+      - MYSQL_PASSWORD=hej123
+    ports:
+      - '3306:3306'
+    expose:
+     - '3306'
