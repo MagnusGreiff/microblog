@@ -128,7 +128,7 @@ exec-tests: test-unit test-integration
 # target: test                         - Run tests and display code coverage
 .PHONY: test
 test: validate exec-tests
-	docker-compose up test
+	docker-compose up --build test
 	$(MAKE) clean-cov
 
 
